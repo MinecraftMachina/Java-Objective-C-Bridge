@@ -94,13 +94,17 @@ public class NativeUtils {
         temp.toFile().deleteOnExit();
  
         // Open and check input stream
-        InputStream is = source.getResourceAsStream(path);
-        if (is == null) {
-            throw new FileNotFoundException("File " + path + " was not found inside JAR.");
-        }
- 
-        try (is; OutputStream out = Files.newOutputStream(temp, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)) {
-            is.transferTo(out);
+        try (InputStream is = source.getResourceAsStream(path)) {
+            if (is == null) {
+                throw new FileNotFoundException("File " + path + " was not found inside JAR.");
+            }
+            try (OutputStream out = Files.newOutputStream(temp, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)) {
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = is.read(buffer)) != -1) {
+                    out.write(buffer, 0, len);
+                }
+            }
         }
 
         return temp;

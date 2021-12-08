@@ -498,8 +498,8 @@ public class Client {
             }
             messages.add(buffer);
         }
-        
-        return messages.toArray(Message[]::new);
+
+        return messages.toArray(new Message[messages.size()]);
     }
     
     

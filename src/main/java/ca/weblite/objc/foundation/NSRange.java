@@ -2,6 +2,7 @@ package ca.weblite.objc.foundation;
 
 import com.sun.jna.Structure;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,6 +63,9 @@ public class NSRange extends Structure {
 
     @Override
     protected List<String> getFieldOrder() {
-        return List.of("location","length");
+        List<String> order = new ArrayList<>();
+        order.add("location");
+        order.add("length");
+        return order;
     }
 }
